@@ -1,32 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Flash Cards</title>
-        <!-- We've provided some styles for you, aren't we nice? -->
-        <link rel="stylesheet" type="text/css" href="reset.css" />
-        <link rel="stylesheet" type="text/css" href="style.css" />
-    </head>
-    <body ng-app="flashCards" ng-controller="MainController">
-    	<div
-    		ng-repeat="flashCard in flashCards | orderBy : 'question'"
-    		class="flash-card">
-    	    <h1>{{ flashCard.question | uppercase }}</h1>
-    	    <ul class="flash-card-answers">
-    	    	<li
-    	    		ng-repeat="answer in flashCard.answers"
-    	    		class="flash-card-answer"
-    	    		ng-click="answerQuestion(answer, flashCard)">{{ answer.text }}</li>
-    	    </ul>
-    	    <h2
-    	    	class="answer-feedback"
-    	    	ng-class="flashCard.answeredCorrectly ? 'correct' : 'incorrect'"
-    	    	ng-show="flashCard.answered">
-    	        <span ng-show="flashCard.answeredCorrectly">Yeah, you got it right!</span>
-    	        <span ng-show="!flashCard.answeredCorrectly">Nope, you got it wrong.</span>
-    	    </h2>
-    	</div>
-    	<script src="angular.js"></script>
-    	<script src="app.js"></script>
-    	<script src="main.controller.js"></script>
-    </body>
+<head>
+  <title>Flash Cards</title>
+  <!-- We've provided some styles for you, aren't we nice? -->
+  <link rel="stylesheet" type="text/css" href="css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+  <div ng-app="flashCards">
+    <div ng-include="'templates/statistics.html'"></div>
+    <div ng-controller="MainController">
+      <div border-on-hover ng-repeat="category in categories">
+        <button class="category-button" ng-click="getCategoryCards(category)" ng-class="{active: category === activeCat}">{{category}}</button>
+      </div>
+      <my-loader border-on-hover ng-show="loading"></my-loader>
+      <flash-card card="flashCard" ng-repeat="flashCard in flashCards | orderBy : 'question'" ng-show="!loading"></flash-card>
+     <!--  <div ng-repeat="flashCard in flashCards | orderBy : 'question'" class="flash-card" ng-show="!loading">
+        <h3>{{flashCard.category}}</h3>
+        <h1>{{ flashCard.question | uppercase }}</h1>
+        <ul class="flash-card-answers">
+          <li
+          ng-repeat="answer in flashCard.answers | cheat"
+          class="flash-card-answer"
+          ng-click="answerQuestion(answer, flashCard)">{{ answer.text }}</li>
+        </ul>
+        <h2
+        class="answer-feedback"
+        ng-class="flashCard.answeredCorrectly ? 'correct' : 'incorrect'"
+        ng-show="flashCard.answered">
+          <span ng-show="flashCard.answeredCorrectly">Yeah, you got it right!</span>
+          <span ng-show="!flashCard.answeredCorrectly">Nope, you got it wrong.</span>
+        </h2>
+      </div> -->
+    </div> <!-- /MainController -->
+  </div> <!-- /flashCards -->
+  <script src="js/lib/angular.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/controllers/MainController.js"></script>
+  <script src="js/controllers/StatsController.js"></script>
+  <script src="js/factories/FlashCardsFactory.js"></script>
+  <script src="js/factories/ScoreFactory.js"></script>
+  <script src="js/directives/loader/loader.js"></script>
+  <script src="js/directives/flash_cards/flashCards.js"></script>
+  <script src="js/directives/attributes/borderOnHover.js"></script>
+</body>
 </html>
